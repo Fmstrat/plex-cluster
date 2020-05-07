@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+
+  # A proxy based on nginx that sits between the Plex server and
+  # the internet. Every time a request is made to Plex, if that
+  # request is to mark status, an API call is made
+  # to plex-cluster-manager.
+  #
+  # There is one of these for every Plex server.
+  plex-cluster-proxy:
+    image: plex-cluster-proxy
+    environment:
+      - PLEX_IP=192.168.6.200
+      - PLEX_PORT=32400
+      - HTTPS_HOST=plex-northwyck.nowsci.com
+      - HTTPS_PORT=33400
+      - RESOLVERS=8.8.4.4 8.8.8.8
+      - SSL_CERTIFICATE=/certs/fullchain.pem
+      - SSL_CERTIFICATE_KEY=/certs/privkey.pem
+      - CLUSTER_MANAGER=http://plex-cluster-manager:3400
+      - CLUSTER_MANAGER_TOKEN=ts3wJgUNaJ6DcB7FhhYGcUpaa9DwPy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./certs/fullchain.pem:/certs/fullchain.pem:ro
+      - ./certs/privkey.pem:/certs/privkey.pem:ro
+      - plex-cluster-proxy:/data
+    ports:
+      - 33400:33400
+    restart: always
+
+  # The service that sychronizes the Plex servers. It takes the API calls
+  # from plex-cluster-proxy, and reaches out to any other configured Plex
+  # servers to set their status just as if the client connecting to the
+  # original Plex server was connecting to that one instead.
+  #
+  # You will want to secure this behind an SSL proxy in the real world.
+  #
+  # There is only ever one of these.
+  plex-cluster-manager:
+    image: plex-cluster-manager
+    command: 'npm run dev'
+    environment:
+      - CLUSTER_MANAGER_TOKEN=ts3wJgUNaJ6DcB7FhhYGcUpaa9DwPy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/plex-cluster-manager.yml:/config/plex-cluster-manager.yml:ro
+      - ./plex-cluster-manager/src/:/app:z
+      - /app/node_modules
+      - plex-cluster-manager:/data
+    restart: always
+
+volumes:
+  plex-cluster-manager:
+  plex-cluster-proxy:

@@ -1,0 +1,5 @@
+hosts:
+  - host: plex.mydomain.com
+    port: 11111
+    token: xxxxxxxxxxxxxxxxxxxx
+    #log: ./plex.log    # This is not commonly used. It is only used to tail a local log.

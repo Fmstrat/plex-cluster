@@ -1,0 +1,5 @@
+plex-cluster-manager/src/node_modules
+plex-cluster-manager/src/plex.log
+plex-cluster-manager/src/plex-cluster.db
+config/plex-cluster-manager.yml
+certs

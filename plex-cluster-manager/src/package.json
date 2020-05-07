@@ -1,0 +1,33 @@
+{
+  "name": "plex-cluster",
+  "version": "0.0.1",
+  "description": "On-demand synchronization of Plex watched status across multiple servers",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "prod": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fmstrat/plex-cluster.git"
+  },
+  "author": "Fmstrat",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Fmstrat/plex-cluster/issues"
+  },
+  "homepage": "https://github.com/Fmstrat/plex-cluster",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cron": "^1.8.2",
+    "express": "^4.17.1",
+    "js-yaml": "^3.13.1",
+    "sqlite3": "^4.1.1",
+    "superagent": "^5.2.1",
+    "tail": "^2.0.3",
+    "xml2js": "^0.4.23"
+  }
+}
