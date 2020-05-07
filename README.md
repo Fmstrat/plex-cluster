@@ -23,27 +23,27 @@ An example use case:
 - Works for Plex.tv or Managed users
 
 ## To Do
-    - Support "full sync" for users on some Roku models and other devices that encapsulate a temporary token in the request header (this does not impact on-demand sync)
+- Support "full sync" for users on some Roku models and other devices that encapsulate a temporary token in the request header (this does not impact on-demand sync)
 
 ## Requirements
-    - Each Plex server must have a dedicated DNS or Dynamic DNS hostname
+- Each Plex server must have a dedicated DNS or Dynamic DNS hostname
 
 ## Installation
 The best way to use `Plex Cluster` is with Docker. You can follow the `Dockerfile`s to set up the proxy manually, however if you're not running Docker for your services, you're missing out.
 
 This installation follows this example:
-    - 2 Plex servers, one at home called `Home` and one remote called `Remote`
-    - `Home` has...
-        - a public DNS record of `plex-home.mydomain.com`
-        - a Plex server running on `192.168.0.10:32400`
-        - a Plex Cluster Proxy instance running on `https://plex-home.mydomain.com:32401`
-        - a wildcard SSL certificate for `*.mydomain.com` in the `/certs` folder
-    - `Remote` has...
-        - a public DNS record of `plex-remote.mydomain.com`
-        - a Plex server running on `192.168.1.10:32400`
-        - a Plex Cluster Proxy instance running on `https://plex-remote.mydomain.com:32401`
-        - a Plex Cluster Manager instance running on `https://plex-remote.mydomain.com:32402`
-        - a wildcard SSL certificate for `*.mydomain.com` in the `/certs` folder
+- 2 Plex servers, one at home called `Home` and one remote called `Remote`
+- `Home` has...
+    - a public DNS record of `plex-home.mydomain.com`
+    - a Plex server running on `192.168.0.10:32400`
+    - a Plex Cluster Proxy instance running on `https://plex-home.mydomain.com:32401`
+    - a wildcard SSL certificate for `*.mydomain.com` in the `/certs` folder
+- `Remote` has...
+    - a public DNS record of `plex-remote.mydomain.com`
+    - a Plex server running on `192.168.1.10:32400`
+    - a Plex Cluster Proxy instance running on `https://plex-remote.mydomain.com:32401`
+    - a Plex Cluster Manager instance running on `https://plex-remote.mydomain.com:32402`
+    - a wildcard SSL certificate for `*.mydomain.com` in the `/certs` folder
 
 ### Setting up the Home instance
 First, we need a Plex server, and a copy of `Plex Cluster Proxy` running at home. These can be spun up with the following `docker-compose.yml`:
@@ -112,7 +112,7 @@ After you spin this up with `docker-compose up -d`, navigate in your browser to 
 The home server setup is complete.
 
 ### Setting up the Remote instance
-Next we need a Plex server, a copy of `Plex Cluster Proxy`. and a copy of `Plex Cluster Manager` running remotely. These can be spun up with the following `docker-compose.yml`:
+Next we need a Plex server, a copy of `Plex Cluster Proxy` and a copy of `Plex Cluster Manager` running remotely. These can be spun up with the following `docker-compose.yml`:
 
 ``` yml
 version: '3.7'
@@ -192,6 +192,15 @@ volumes:
   plex-cluster-manager:
   plex-cluster-proxy:    
 ```
+Before starting it up, you will need to create the `plex-cluster-manager.yml` configuration file ([sample](config/plex-cluster-manager.sample.yml)). This file looks like:
+``` yml
+hosts:
+  - host: plex.mydomain.com
+    port: 11111
+    token: xxxxxxxxxxxxxxxxxxxx
+    #log: ./plex.log    # This is not commonly used. It is only used to tail a local log.
+```
+The token should be a Plex token for the administrative user on the Plex server. You can get a token from Plex using [this script](tools/get-plex-token.sh).
 
 After you spin this up with `docker-compose up -d`, navigate in your browser to `http://192.168.1.10:32400/web` and login to your new server. A few key things to set up are:
 - Settings -> Remote Access -> Disable Remote Access (Don't worry, you'll still be able to get here through your custom URL)
