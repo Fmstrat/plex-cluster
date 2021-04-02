@@ -214,4 +214,4 @@ The remote server setup is complete.
 
 ### Final steps
 
-Once everything is complete, login via `https://plex.tv` and if you watch the logs via `docker-compose logs -ft` and mark shows watched you should start seeing `plex-cluster-proxy` and `plex-cluster-manager` scynchronize the status.
+Once everything is complete, login via `https://plex.tv` and if you watch the logs via `docker-compose logs -ft` and mark shows watched you should start seeing `plex-cluster-proxy` and `plex-cluster-manager` synchronize the status.
