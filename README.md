@@ -1,6 +1,8 @@
 # Plex Cluster
 Synchronizes the watched and timeline status between any number of Plex servers all using standard Plex APIs.
 
+***This project is in BETA TESTING.***
+
 Plex Cluster contains two applications:
 - **Plex Cluster Proxy**, which is installed alongside every Plex server and acts as a proxy (using `nginx`) between Plex Media Server and the internet. This application's job is to pass any requests that come to it along to the Plex server while catching any requests that mark watched status and also forwarding them on the **Plex Cluster Manager**. There is one instance of `Plex Cluster Proxy` for each Plex server.
 - **Plex Cluster Manager** is then used to synchronize the status between Plex servers. There is only one instance of `Plex Cluster Manager` which is used by all instances of `Plex Cluster Proxy`.
